@@ -101,8 +101,8 @@ function getRandomBigInt(max) {
     BigInt(max)
   );
 }
-export async function GET(req) {
-  if (req.method === "GET") {
+export async function POST(req) {
+  if (req.method === "POST") {
     try {
       // Parse request body
       const body = req.body;
