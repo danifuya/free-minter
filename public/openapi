@@ -1,0 +1,55 @@
+openapi: 3.0.0
+info:
+  title: NFT Minting API
+  description: API for minting NFTs on the KLAOS blockchain.
+  version: 1.0.0
+servers:
+  - url: https://laos-free-minter.vercel.app/api
+    description: Main API server
+paths:
+  /mint:
+    post:
+      operationId: mint
+      summary: Mint a new NFT
+      description: Triggers the minting of a new NFT on the KLAOS blockchain.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nonce:
+                  type: integer
+                  description: Nonce for the transaction.
+             
+      responses:
+        "200":
+          description: NFT minted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  asset:
+                    type: string
+        "406":
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
