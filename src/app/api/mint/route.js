@@ -132,7 +132,7 @@ export async function POST(req) {
     } catch (error) {
       console.log(error);
       return NextResponse.json(
-        { error: "Internal Server Erroree" },
+        { error: "Internal Server Error" },
         { status: 500 }
       );
     }
