@@ -2,7 +2,7 @@ const { Web3 } = require("web3");
 const axios = require("axios");
 import { NextResponse } from "next/server";
 // This function can run for a maximum of 5 seconds
-export const maxDuration = 35;
+export const maxDuration = 150;
 
 // Environment variables
 const privateKey = process.env.PRIVATE_KEY;
