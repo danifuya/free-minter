@@ -2,7 +2,7 @@ const { Web3 } = require("web3");
 const axios = require("axios");
 import { NextResponse } from "next/server";
 // This function can run for a maximum of 5 seconds
-export const maxDuration = 150;
+export const maxDuration = 200;
 
 // Environment variables
 const privateKey = process.env.PRIVATE_KEY;
@@ -22,9 +22,6 @@ const toAddress = "0x5d4FF079B104022472C96fa1dA7C193398E7e9be";
 // The contract address of a collection in KLAOS owned by the sender
 const contractAddress = "0xFFffffFfffffFffffffFFfFe00000000000000D8";
 
-// The IPFS address with the metadata of the asset to be minted
-const tokenURI = "ipfs://QmPuwGA4tHHdog5R4w1TUGjVGf2zd1v6fXJZhiXgJ8a1Tj";
-
 // The URL of the interface ABI, from GitHub
 const contractABIUrl =
   "https://github.com/freeverseio/laos/blob/main/ownership-chain/precompile/evolution-collection/contracts/EvolutionCollection.json?raw=true";
@@ -32,7 +29,7 @@ const contractABIUrl =
 // Define the number of assets that need to be minted
 const numberOfMints = 1;
 
-async function mintAsset(nonce) {
+async function mintAsset(nonce, tokenURI) {
   try {
     // Fetching the contract ABI
     const response = await axios.get(contractABIUrl);
@@ -136,13 +133,28 @@ export async function POST(req) {
       // Parse request body
       const body = await req.json();
       console.log("inside", body);
-      const ipfsHash = await uploadToIPFS(body);
-      console.log("pinata", headers.pinata_api_key);
-      console.log("pinata 2", headers.pinata_secret_api_key);
+
+      // Call your existing function with the necessary parameters
+      // Remember to adjust this part according to your specific needs
+      const currentNonce = await web3.eth.getTransactionCount(
+        web3.eth.accounts.privateKeyToAccount(privateKey).address
+      );
+      console.log("currentNonce", currentNonce);
+      const NFT = {
+        name: body.name,
+        description: body.description,
+        attributes: body.attributes,
+        animation_url: "",
+        image: "ipfs://QmULeUxD3NTHMuvpkPeRACWmmYQSHsjsdsSt7PXXqYDvjo",
+      };
+      const ipfsHash = await uploadToIPFS(NFT);
+      const tokenURI = `ipfs://${ipfsHash}`;
+      console.log("ipfsHash", tokenURI);
+      const asset = await mintAsset(currentNonce, tokenURI);
 
       // Sending a response back
       return NextResponse.json(
-        { success: `IPFS uploaded ${ipfsHash}` },
+        { success: `Asset minted successfully ${asset}` },
         { status: 200 }
       );
     } catch (error) {
