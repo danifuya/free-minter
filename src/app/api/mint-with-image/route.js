@@ -138,6 +138,7 @@ export async function POST(req) {
       console.log("inside", body);
       const ipfsHash = await uploadToIPFS(body);
       console.log("pinata", pinata_api_key);
+      console.log("pinata 2", pinata_api_secret);
 
       // Sending a response back
       return NextResponse.json(
