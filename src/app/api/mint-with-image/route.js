@@ -154,7 +154,9 @@ export async function POST(req) {
 
       // Sending a response back
       return NextResponse.json(
-        { success: `Asset minted successfully ${asset}` },
+        {
+          success: `apps.k-laos.io/asset/80001/0xdF6Ac4f1206FD79e857Bb6D9ed38E2622bAaa0b5/${asset}`,
+        },
         { status: 200 }
       );
     } catch (error) {
